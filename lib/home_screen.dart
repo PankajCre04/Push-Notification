@@ -17,7 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
   String token = "";
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   @override
   void initState() {
     super.initState();
@@ -57,14 +58,21 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void addServiceFunctionality() async {
+    await http.get(Uri.parse("url"));
+  }
+
   initInfo() {
-    var androidInitializer = const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSetting = InitializationSettings(android: androidInitializer);
+    var androidInitializer =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSetting =
+        InitializationSettings(android: androidInitializer);
     flutterLocalNotificationsPlugin.initialize(initializationSetting);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print("........... onMessage.............");
-      print("onMessage: ${message.notification?.title}/${message.notification?.body}");
+      print(
+          "onMessage: ${message.notification?.title}/${message.notification?.body}");
 
       BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
         message.notification!.body.toString(),
@@ -72,7 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
         contentTitle: message.notification!.title.toString(),
         htmlFormatContentTitle: true,
       );
-      AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+      AndroidNotificationDetails androidNotificationDetails =
+          AndroidNotificationDetails(
         "Push",
         "Push",
         importance: Importance.high,
@@ -80,7 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
         playSound: true,
         styleInformation: bigTextStyleInformation,
       );
-      NotificationDetails platformChannelSpecific = NotificationDetails(android: androidNotificationDetails);
+      NotificationDetails platformChannelSpecific =
+          NotificationDetails(android: androidNotificationDetails);
       await flutterLocalNotificationsPlugin.show(
         0,
         message.notification!.title,
@@ -120,7 +130,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print("--> user granted permission");
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       print("--> user granted provisional permission");
     } else {
       print("--> user declined or not accepted permission");
